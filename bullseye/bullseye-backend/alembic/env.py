@@ -7,14 +7,21 @@ config = context.config
 
 fileConfig(config.config_file_name)
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Add your app path
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../app')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Import Base and models
-from database import Base
+from app.core.database import Base
 from app import models  # this registers all models
+
+ALEMBIC_URL = os.getenv("ALEMBIC_URL")
+
+config.set_main_option("sqlalchemy.url", ALEMBIC_URL)
 
 target_metadata = Base.metadata
 
