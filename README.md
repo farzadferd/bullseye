@@ -67,13 +67,16 @@ Bullseye uses historical price trends, sector performance, and user behavior to 
 ### 1. Clone the repo
 
 ```bash
+# === 1. Clone the Repository ===
 git clone https://github.com/yourusername/bullseye.git
 cd bullseye
 
+# === 2. Start the Backend (FastAPI + Backtrader) ===
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 
-cd frontend
+# === 3. Start the Frontend (React) ===
+cd ../frontend
 npm install
 npm run dev
