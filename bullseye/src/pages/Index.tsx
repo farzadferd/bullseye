@@ -21,24 +21,66 @@ const Index = () => {
   });
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Frontend-only authentication simulation
-    if (isLogin) {
-      // Simulate login
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userEmail", formData.email);
-      navigate("/dashboard");
-    } else {
-      // Simulate signup
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords don't match!");
-        return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default browser form submission (page reload)
+
+    // --- Client-side validation for signup password mismatch ---
+    // This check runs only if the user is in signup mode
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match. Please re-enter."); // Inform user of mismatch
+      return; // Stop the function execution if passwords don't match
+    }
+
+    // --- Determine API endpoint based on current mode (login or signup) ---
+    const url = isLogin ? "http://localhost:8081/login" : "http://localhost:8081/signup";
+
+    // --- Prepare the data payload to be sent to the backend ---
+    // The structure of the payload changes based on whether it's a login or signup request.
+    const payload = isLogin
+      ? {
+          email: formData.email,
+          password: formData.password,
+        }
+      : {
+          email: formData.email,
+          first_name: formData.firstName, // Matches backend Pydantic schema (snake_case)
+          last_name: formData.lastName,   // Matches backend Pydantic schema (snake_case)
+          password: formData.password,
+          confirmPassword: formData.confirmPassword, // Matches backend Pydantic schema (camelCase with alias)
+        };
+
+    try {
+      // --- Send the HTTP POST request to the backend API ---
+      const res = await fetch(url, {
+        method: "POST", // Specify HTTP POST method
+        headers: {
+          "Content-Type": "application/json", // Indicate that the request body is JSON
+        },
+        body: JSON.stringify(payload), // Convert the JavaScript object to a JSON string
+      });
+
+      // --- Handle non-OK HTTP responses (e.g., 4xx or 5xx status codes) ---
+      if (!res.ok) {
+        const errorData = await res.json(); // Parse the error response body from the backend
+        // Display an alert with the specific error detail from the backend, or a generic error message
+        alert("Error: " + (errorData.detail || "An unknown error occurred during authentication."));
+        return; // Stop function execution if there was an error
       }
+
+      // --- Handle successful HTTP responses (2xx status codes) ---
+      const data = await res.json(); // Parse the successful response body (e.g., user info)
+
+      // Store authentication status and user details in local storage
+      // This is a simple client-side way to persist login state.
       localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userEmail", formData.email);
-      localStorage.setItem("userName", `${formData.firstName} ${formData.lastName}`);
+      localStorage.setItem("userEmail", data.email);
+      localStorage.setItem("userName", `${data.first_name} ${data.last_name}`); // Store full name
+
+      // Navigate to the dashboard upon successful login or signup
       navigate("/dashboard");
+    } catch (error) {
+      // --- Catch network-related errors (e.g., backend server is not running or unreachable) ---
+      alert("Network error: Failed to connect to the server. Please try again later or ensure the backend is running: " + error);
     }
   };
 

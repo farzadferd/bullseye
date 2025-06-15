@@ -6,5 +6,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        validate_by_name = True
 
 settings = Settings()

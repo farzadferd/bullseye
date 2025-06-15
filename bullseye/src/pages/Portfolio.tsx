@@ -11,7 +11,7 @@ import { TrendingUp, TrendingDown, DollarSign, Percent, Target, Trash2 } from "l
 const Portfolio = () => {
   const [holdings, setHoldings] = useState([
     { symbol: "AAPL", name: "Apple Inc.", shares: 50, price: 153.45, value: 7672.50, change: "+2.1%", allocation: 25.6 },
-    { symbol: "GOOGL", name: "Alphabet Inc.", shares: 10, price: 2780.50, value: 27805.00, change: "+1.8%", allocation: 92.8 },
+    { symbol: "GOOGL", name: "Google Inc.", shares: 10, price: 2780.50, value: 27805.00, change: "+1.8%", allocation: 92.8 },
     { symbol: "TSLA", name: "Tesla Inc.", shares: 25, price: 243.20, value: 6080.00, change: "-0.5%", allocation: 20.3 },
     { symbol: "MSFT", name: "Microsoft Corp.", shares: 30, price: 378.90, value: 11367.00, change: "+1.2%", allocation: 38.0 },
   ]);
