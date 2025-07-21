@@ -6,6 +6,9 @@ from app.models import User
 from app.schemas.user import UserCreate
 from passlib.context import CryptContext
 import logging # Added for logging
+from app.models.portfoliostock import PortfolioStock
+from app.schemas.portfolio import StockCreate
+from app.schemas.portfolio import StockOut
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -62,4 +65,30 @@ async def create_user(db: AsyncSession, user: UserCreate):
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
+async def add_stock(db: AsyncSession, user_id: int, stock: StockCreate, price: float):
+    new_stock = PortfolioStock(
+        user_id=user_id,
+        symbol=stock.symbol.upper(),
+        name=stock.name,
+        shares=stock.shares,
+        purchase_price=price
+    )
+    db.add(new_stock)
+    await db.commit()
+    await db.refresh(new_stock)
+    return new_stock
 
+async def remove_stock(db: AsyncSession, user_id: int, symbol: str):
+    result = await db.execute(select(PortfolioStock).where(
+        PortfolioStock.user_id == user_id,
+        PortfolioStock.symbol == symbol.upper()
+    ))
+    stock = result.scalar_one_or_none()
+    if stock:
+        await db.delete(stock)
+        await db.commit()
+    return stock
+
+async def get_user_stocks(db: AsyncSession, user_id: int):
+    result = await db.execute(select(PortfolioStock).where(PortfolioStock.user_id == user_id))
+    return result.scalars().all()

@@ -28,3 +28,14 @@ class UserResponse(UserBase):
 
     class Config:
         orm_mode = True # For Pydantic v1, in v2 this is via 'from_attributes = True' on the model itself (but orm_mode still works for now)
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+
+    class Config:
+        orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

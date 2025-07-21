@@ -4,10 +4,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db, Base, engine # Ensure Base and engine are imported
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 from app.core import crud
-from app.api.routes import stock
+from app.api.routes.auth import router as auth_router
+from app.api.routes.portfolio import router as portfolio_router
+
 # No explicit need for sqlalchemy.schema.CreateTable unless you're explicitly using it in a startup script
 
 app = FastAPI()
+
+app.include_router(auth_router)
+app.include_router(portfolio_router)
 
 # Define allowed origins for CORS
 origins = [
@@ -17,8 +22,6 @@ origins = [
     "http://10.0.0.180:8081",  # Your backend application when accessed via its network IP
     # Add other allowed origins if needed, e.g., your actual deployed frontend URL
 ]
-
-app.include_router(stock.router)
 
 # Add CORS middleware to your FastAPI application
 app.add_middleware(

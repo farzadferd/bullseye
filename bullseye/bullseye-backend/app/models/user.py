@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, UniqueConstraint
+from sqlalchemy import Column, Float, Integer, String, UniqueConstraint
 from app.core.database import Base
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__ = "users"
@@ -10,3 +11,5 @@ class User(Base):
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False, index=True)
     hashed_password = Column(String, nullable=False)
+    stocks = relationship("PortfolioStock", back_populates="user", cascade="all, delete")
+    cash_balance = Column(Float, default=0.0) 
