@@ -27,7 +27,6 @@
 
 ## 📷 Preview
 
-> _(Add screenshots or GIFs of your dashboard, backtesting tool, and strategy analytics here if available)_
 
 ---
 
