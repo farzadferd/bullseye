@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db, Base, engine # Ensure Base and engine are imported
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 from app.core import crud
+from app.api.routes import stock
 # No explicit need for sqlalchemy.schema.CreateTable unless you're explicitly using it in a startup script
 
 app = FastAPI()
@@ -16,6 +17,8 @@ origins = [
     "http://10.0.0.180:8081",  # Your backend application when accessed via its network IP
     # Add other allowed origins if needed, e.g., your actual deployed frontend URL
 ]
+
+app.include_router(stock.router)
 
 # Add CORS middleware to your FastAPI application
 app.add_middleware(
@@ -102,3 +105,4 @@ async def login(user: UserLogin, db: AsyncSession = Depends(get_db)):
     
     print(f"DEBUG: Login successful for user: {db_user.email}")
     return db_user
+

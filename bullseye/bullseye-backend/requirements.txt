@@ -9,3 +9,6 @@ passlib[bcrypt]
 python-jose[cryptography]
 psycopg2-binary
 sqlalchemy
+passlib[bcrypt]
+python-jose[cryptography]
+fastapi[all]
