@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
+import AIRecommendations from "./AIRecommendations";
 
 const Dashboard = () => {
   const [selectedStock, setSelectedStock] = useState("AAPL");
@@ -111,7 +112,7 @@ const Dashboard = () => {
           })}
         </div>
 
-        {/* Charts and Stock Analysis Grid */}
+        {/* Charts and AI Recommendations Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Portfolio Performance */}
           <Card>
@@ -175,9 +176,8 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Trading Signals */}
-          <TradingSignals 
-            symbol={selectedStock}
+          {/* AI Recommendations */}
+          <AIRecommendations 
             currentPrice={stockData.currentPrice}
           />
         </div>
