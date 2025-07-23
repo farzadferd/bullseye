@@ -6,6 +6,7 @@ from app.schemas.user import UserCreate, UserLogin, UserResponse
 from app.core import crud
 from app.api.routes.auth import router as auth_router
 from app.api.routes.portfolio import router as portfolio_router
+from app.api.routes import stocks
 
 # No explicit need for sqlalchemy.schema.CreateTable unless you're explicitly using it in a startup script
 
@@ -13,6 +14,7 @@ app = FastAPI()
 
 app.include_router(auth_router)
 app.include_router(portfolio_router)
+app.include_router(stocks.router)
 
 # Define allowed origins for CORS
 origins = [

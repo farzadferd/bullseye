@@ -11,5 +11,6 @@ class User(Base):
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False, index=True)
     hashed_password = Column(String, nullable=False)
-    stocks = relationship("PortfolioStock", back_populates="user", cascade="all, delete")
+    portfolio = relationship("PortfolioStock", back_populates="user", cascade="all, delete")
     cash_balance = Column(Float, default=0.0) 
+    stocks = relationship("Stock", back_populates="user", cascade="all, delete")

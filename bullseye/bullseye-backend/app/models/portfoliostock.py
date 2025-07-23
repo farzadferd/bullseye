@@ -11,5 +11,4 @@ class PortfolioStock(Base):
     name = Column(String)
     shares = Column(Integer)
     purchase_price = Column(Float)
-
-    user = relationship("User", back_populates="stocks")
+    user = relationship("User", back_populates="portfolio")
