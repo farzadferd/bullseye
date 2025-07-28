@@ -7,8 +7,8 @@ from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from datetime import datetime, timedelta
-from app.models import User
-from app.schemas import UserCreate, UserOut, Token
+from app.models.user import User
+from app.schemas.user import UserCreate, UserOut, Token
 from app.core.database import get_db
 
 load_dotenv()

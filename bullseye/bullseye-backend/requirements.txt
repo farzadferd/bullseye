@@ -12,3 +12,4 @@ sqlalchemy
 passlib[bcrypt]
 python-jose[cryptography]
 fastapi[all]
+requests

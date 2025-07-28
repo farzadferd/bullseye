@@ -6,7 +6,7 @@ class PortfolioStock(Base):
     __tablename__ = "portfolio_stocks"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))  # assumes User model exists
+    user_id = Column(Integer, ForeignKey("users.id")) 
     symbol = Column(String, index=True)
     name = Column(String)
     shares = Column(Integer)

@@ -72,12 +72,22 @@ const Index = () => {
 
       // Store authentication status and user details in local storage
       // This is a simple client-side way to persist login state.
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userEmail", data.email);
-      localStorage.setItem("userName", `${data.first_name} ${data.last_name}`); // Store full name
-
-      // Navigate to the dashboard upon successful login or signup
+      if (isLogin) {
+        // Store JWT token from login response
+        localStorage.setItem("token", data.access_token);
+      } else {
+        // Optional: For signup, you may want to auto-login or redirect to login
+        alert("Signup successful! Please log in.");
+        setIsLogin(true);
+        return;
+      }
+      
+      // Optionally store user info too
+      localStorage.setItem("userEmail", formData.email);
+      
+      // Navigate to dashboard
       navigate("/dashboard");
+      
     } catch (error) {
       // --- Catch network-related errors (e.g., backend server is not running or unreachable) ---
       alert("Network error: Failed to connect to the server. Please try again later or ensure the backend is running: " + error);
